@@ -88,11 +88,11 @@ const ProductCard = ({
       <div className="flex items-center justify-between mb-3">
         <div>
           <div className="text-xs text-gray-600">In stock</div>
-          <div className="font-medium text-sm">{stock.toLocaleString()} pcs.</div>
+          <div className="font-medium text-sm">{stock !== undefined && stock !== null ? stock.toLocaleString() : 'N/A'} pcs.</div>
         </div>
         <div className="text-right">
           <div className="text-xs text-gray-600">Price per pc</div>
-          <div className="font-bold text-lg text-green-600">from ${price}</div>
+          <div className="font-bold text-lg text-green-600">from ${price !== undefined && price !== null ? price.toFixed(2) : 'N/A'}</div>
         </div>
       </div>
 
