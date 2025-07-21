@@ -91,7 +91,8 @@ export const AuthProvider = ({ children }) => {
         localStorage.setItem('token', data.access_token)
         return { success: true, message: data.message }
       } else {
-        return { success: false, message: data.message }
+        // If response is not ok, extract the error message from the response body
+        return { success: false, message: data.message || 'Registration failed' }
       }
     } catch (error) {
       console.error('Register error:', error)
@@ -125,4 +126,6 @@ export const AuthProvider = ({ children }) => {
     </AuthContext.Provider>
   )
 }
+
+
 

@@ -3,15 +3,15 @@ import { Link } from 'react-router-dom'
 import { Button } from '@/components/ui/button'
 import { Badge } from '@/components/ui/badge'
 
-const ProductCard = ({ 
-  platform, 
-  title, 
-  description, 
-  price, 
-  stock, 
-  rating, 
-  successRate, 
-  minOrder, 
+const ProductCard = ({
+  platform,
+  title,
+  description,
+  price,
+  stock,
+  rating,
+  successRate,
+  minOrder,
   image,
   isNew = false,
   accountId
@@ -124,4 +124,5 @@ const ProductCard = ({
 }
 
 export default ProductCard
+
 
