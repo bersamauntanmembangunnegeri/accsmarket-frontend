@@ -1,6 +1,7 @@
 import { useState } from 'react'
 import { Link, useNavigate } from 'react-router-dom'
-import { Search, User, ShoppingCart, Menu } from 'lucide-react'
+import { useAuth } from '../context/AuthContext'
+import { Search, User, ShoppingCart, Menu, LogOut, Settings } from 'lucide-react'
 import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
 import {
@@ -10,10 +11,18 @@ import {
   SelectTrigger,
   SelectValue,
 } from '@/components/ui/select'
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuSeparator,
+  DropdownMenuTrigger,
+} from '@/components/ui/dropdown-menu'
 
 const Header = () => {
   const [searchTerm, setSearchTerm] = useState('')
   const [selectedCategory, setSelectedCategory] = useState('')
+  const { user, logout, isAdmin } = useAuth()
   const navigate = useNavigate()
 
   const handleSearch = (e) => {
@@ -26,6 +35,11 @@ const Header = () => {
   const handleCategorySelect = (category) => {
     setSelectedCategory(category)
     navigate(`/category/${category}`)
+  }
+
+  const handleLogout = () => {
+    logout()
+    navigate('/')
   }
 
   return (
@@ -41,17 +55,51 @@ const Header = () => {
             <Link to="/terms" className="hover:text-green-400 transition-colors">Terms of use</Link>
             <Link to="/seller" className="hover:text-green-400 transition-colors">Become a seller</Link>
           </div>
-          <div className="flex space-x-4">
-            <Link to="/signup">
-              <Button variant="outline" size="sm" className="text-white border-white hover:bg-white hover:text-gray-900">
-                + Sign Up
-              </Button>
-            </Link>
-            <Link to="/login">
-              <Button variant="outline" size="sm" className="text-white border-white hover:bg-white hover:text-gray-900">
-                Login
-              </Button>
-            </Link>
+          <div className="flex items-center space-x-4">
+            {user ? (
+              <DropdownMenu>
+                <DropdownMenuTrigger asChild>
+                  <Button variant="ghost" size="sm" className="text-white hover:text-gray-300">
+                    <User className="h-4 w-4 mr-2" />
+                    {user.username}
+                  </Button>
+                </DropdownMenuTrigger>
+                <DropdownMenuContent align="end">
+                  <DropdownMenuItem asChild>
+                    <Link to="/account">My Account</Link>
+                  </DropdownMenuItem>
+                  {isAdmin() && (
+                    <>
+                      <DropdownMenuSeparator />
+                      <DropdownMenuItem asChild>
+                        <Link to="/admin">
+                          <Settings className="h-4 w-4 mr-2" />
+                          Admin Panel
+                        </Link>
+                      </DropdownMenuItem>
+                    </>
+                  )}
+                  <DropdownMenuSeparator />
+                  <DropdownMenuItem onClick={handleLogout}>
+                    <LogOut className="h-4 w-4 mr-2" />
+                    Logout
+                  </DropdownMenuItem>
+                </DropdownMenuContent>
+              </DropdownMenu>
+            ) : (
+              <div className="flex space-x-2">
+                <Link to="/signup">
+                  <Button variant="outline" size="sm" className="text-white border-white hover:bg-white hover:text-gray-900">
+                    + Sign Up
+                  </Button>
+                </Link>
+                <Link to="/login">
+                  <Button variant="outline" size="sm" className="text-white border-white hover:bg-white hover:text-gray-900">
+                    Login
+                  </Button>
+                </Link>
+              </div>
+            )}
             <select className="bg-transparent border border-gray-600 rounded px-2 py-1 text-xs">
               <option value="en">Eng</option>
               <option value="ru">Рус</option>

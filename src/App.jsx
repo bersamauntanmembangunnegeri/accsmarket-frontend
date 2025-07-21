@@ -1,42 +1,57 @@
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom'
+import { AuthProvider } from './context/AuthContext'
 import Header from './components/Header'
 import HomePage from './pages/HomePage'
 import CategoryPage from './pages/CategoryPage'
 import ProductDetailPage from './pages/ProductDetailPage'
 import AdminDashboardPage from './pages/AdminDashboardPage'
+import LoginPage from './pages/LoginPage'
+import SignupPage from './pages/SignupPage'
+import ProtectedRoute from './components/ProtectedRoute'
+import ProductListPage from './pages/admin/ProductListPage'
+import ProductForm from './pages/admin/ProductForm'
 import './App.css'
 
 function App() {
   return (
-    <Router>
-      <div className="min-h-screen bg-gray-100">
-        <Header />
-        <Routes>
-          <Route path="/" element={<HomePage />} />
-          <Route path="/category/:category" element={<CategoryPage />} />
-          <Route path="/category/:category/:subcategory" element={<CategoryPage />} />
-          <Route path="/product/:id" element={<ProductDetailPage />} />
-          <Route path="/search" element={<CategoryPage />} />
-          {/* Admin Routes */}
-          <Route path="/admin" element={<AdminDashboardPage />}>
-            <Route index element={<div>Admin Dashboard Home</div>} />
-            <Route path="products" element={<ProductListPage />} />
-            <Route path="products/new" element={<ProductForm />} />
-            <Route path="products/edit/:id" element={<ProductForm />} />
-            <Route path="users" element={<div>User Management</div>} />
-            <Route path="settings" element={<div>Admin Settings</div>} />
-          </Route>
-          {/* Placeholder routes for other pages */}
-          <Route path="/news" element={<div className="container mx-auto px-4 py-8"><h1>News Page</h1><p>Coming soon...</p></div>} />
-          <Route path="/info" element={<div className="container mx-auto px-4 py-8"><h1>Useful Information</h1><p>Coming soon...</p></div>} />
-          <Route path="/faq" element={<div className="container mx-auto px-4 py-8"><h1>FAQ</h1><p>Coming soon...</p></div>} />
-          <Route path="/terms" element={<div className="container mx-auto px-4 py-8"><h1>Terms of Use</h1><p>Coming soon...</p></div>} />
-          <Route path="/seller" element={<div className="container mx-auto px-4 py-8"><h1>Become a Seller</h1><p>Coming soon...</p></div>} />
-          <Route path="/login" element={<div className="container mx-auto px-4 py-8"><h1>Login</h1><p>Coming soon...</p></div>} />
-          <Route path="/signup" element={<div className="container mx-auto px-4 py-8"><h1>Sign Up</h1><p>Coming soon...</p></div>} />
-          <Route path="/account" element={<div className="container mx-auto px-4 py-8"><h1>My Account</h1><p>Coming soon...</p></div>} />
-          <Route path="/cart" element={<div className="container mx-auto px-4 py-8"><h1>Shopping Cart</h1><p>Coming soon...</p></div>} />
-        </Routes>
+    <AuthProvider>
+      <Router>
+        <div className="min-h-screen bg-gray-100">
+          <Header />
+          <Routes>
+            <Route path="/" element={<HomePage />} />
+            <Route path="/category/:category" element={<CategoryPage />} />
+            <Route path="/category/:category/:subcategory" element={<CategoryPage />} />
+            <Route path="/product/:id" element={<ProductDetailPage />} />
+            <Route path="/search" element={<CategoryPage />} />
+            <Route path="/login" element={<LoginPage />} />
+            <Route path="/signup" element={<SignupPage />} />
+            {/* Admin Routes - Protected */}
+            <Route path="/admin" element={
+              <ProtectedRoute adminOnly={true}>
+                <AdminDashboardPage />
+              </ProtectedRoute>
+            }>
+              <Route index element={<div>Admin Dashboard Home</div>} />
+              <Route path="products" element={<ProductListPage />} />
+              <Route path="products/new" element={<ProductForm />} />
+              <Route path="products/edit/:id" element={<ProductForm />} />
+              <Route path="users" element={<div>User Management</div>} />
+              <Route path="settings" element={<div>Admin Settings</div>} />
+            </Route>
+            {/* Placeholder routes for other pages */}
+            <Route path="/news" element={<div className="container mx-auto px-4 py-8"><h1>News Page</h1><p>Coming soon...</p></div>} />
+            <Route path="/info" element={<div className="container mx-auto px-4 py-8"><h1>Useful Information</h1><p>Coming soon...</p></div>} />
+            <Route path="/faq" element={<div className="container mx-auto px-4 py-8"><h1>FAQ</h1><p>Coming soon...</p></div>} />
+            <Route path="/terms" element={<div className="container mx-auto px-4 py-8"><h1>Terms of Use</h1><p>Coming soon...</p></div>} />
+            <Route path="/seller" element={<div className="container mx-auto px-4 py-8"><h1>Become a Seller</h1><p>Coming soon...</p></div>} />
+            <Route path="/account" element={
+              <ProtectedRoute>
+                <div className="container mx-auto px-4 py-8"><h1>My Account</h1><p>Coming soon...</p></div>
+              </ProtectedRoute>
+            } />
+            <Route path="/cart" element={<div className="container mx-auto px-4 py-8"><h1>Shopping Cart</h1><p>Coming soon...</p></div>} />
+          </Routes>
 
         {/* Footer */}
         <footer className="bg-gray-800 text-white py-8 mt-12">
