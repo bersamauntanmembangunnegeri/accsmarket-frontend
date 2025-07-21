@@ -52,7 +52,7 @@ function App() {
             } />
             <Route path="/cart" element={<div className="container mx-auto px-4 py-8"><h1>Shopping Cart</h1><p>Coming soon...</p></div>} />
           </Routes>
-
+        </div>
         {/* Footer */}
         <footer className="bg-gray-800 text-white py-8 mt-12">
           <div className="container mx-auto px-4">
