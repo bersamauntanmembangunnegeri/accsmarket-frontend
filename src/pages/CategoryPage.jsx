@@ -16,30 +16,25 @@ const CategoryPage = () => {
     max: searchParams.get('maxPrice') || ''
   })
 
-  const { data: accounts, loading, error } = useApi('/accounts')
+  const buildApiEndpoint = () => {
+    const params = new URLSearchParams()
+    if (category) params.set('platform', category)
+    if (searchTerm) params.set('search', searchTerm)
+    if (priceRange.min) params.set('min_price', priceRange.min)
+    if (priceRange.max) params.set('max_price', priceRange.max)
 
-  // Filter accounts based on category, subcategory, and search parameters
-  const filteredAccounts = accounts?.accounts?.filter(account => {
-    if (category && !account.platform.toLowerCase().includes(category.toLowerCase())) {
-      return false
-    }
-    if (subcategory && !account.account_type.toLowerCase().includes(subcategory.toLowerCase())) {
-      return false
-    }
-    if (searchTerm && !account.title.toLowerCase().includes(searchTerm.toLowerCase())) {
-      return false
-    }
-    if (priceRange.min && account.price < parseFloat(priceRange.min)) {
-      return false
-    }
-    if (priceRange.max && account.price > parseFloat(priceRange.max)) {
-      return false
-    }
-    return true
-  }) || []
+    const queryString = params.toString()
+    return `/accounts${queryString ? `?${queryString}` : ''}`
+  }
 
-  // Sort accounts
-  const sortedAccounts = [...filteredAccounts].sort((a, b) => {
+  const { data: accounts, loading, error, refetch } = useApi(buildApiEndpoint())
+
+  useEffect(() => {
+    refetch()
+  }, [searchTerm, category, subcategory, priceRange.min, priceRange.max, refetch])
+
+  // Sort accounts client-side for now, as backend sorting is not implemented yet
+  const sortedAccounts = accounts?.accounts?.sort((a, b) => {
     switch (sortBy) {
       case 'price-low':
         return a.price - b.price
@@ -52,7 +47,7 @@ const CategoryPage = () => {
       default: // newest
         return new Date(b.created_at) - new Date(a.created_at)
     }
-  })
+  }) || []
 
   const handleSearch = () => {
     const params = new URLSearchParams()
@@ -180,4 +175,5 @@ const CategoryPage = () => {
 }
 
 export default CategoryPage
+
 

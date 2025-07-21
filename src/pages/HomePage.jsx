@@ -1,16 +1,21 @@
 import CategorySection from '../components/CategorySection'
 import { useApi } from '../hooks/useApi'
 import { mockProducts } from '../data/mockData'
+import { useNavigate } from 'react-router-dom'
 
 const HomePage = () => {
   const { data: apiData, loading, error } = useApi('/accounts/by-category')
+  const navigate = useNavigate()
   
   // Use API data if available, otherwise fall back to mock data
   const productsData = apiData || mockProducts
 
   const handleViewAll = (category, subcategory) => {
-    console.log(`View all for ${category} - ${subcategory}`)
-    // TODO: Navigate to category page
+    if (subcategory) {
+      navigate(`/category/${category}/${subcategory}`)
+    } else {
+      navigate(`/category/${category}`)
+    }
   }
 
   if (loading) {
@@ -58,4 +63,5 @@ const HomePage = () => {
 }
 
 export default HomePage
+
 
