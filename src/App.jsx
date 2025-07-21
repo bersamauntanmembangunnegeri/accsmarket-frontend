@@ -3,6 +3,7 @@ import Header from './components/Header'
 import HomePage from './pages/HomePage'
 import CategoryPage from './pages/CategoryPage'
 import ProductDetailPage from './pages/ProductDetailPage'
+import AdminDashboardPage from './pages/AdminDashboardPage'
 import './App.css'
 
 function App() {
@@ -16,6 +17,15 @@ function App() {
           <Route path="/category/:category/:subcategory" element={<CategoryPage />} />
           <Route path="/product/:id" element={<ProductDetailPage />} />
           <Route path="/search" element={<CategoryPage />} />
+          {/* Admin Routes */}
+          <Route path="/admin" element={<AdminDashboardPage />}>
+            <Route index element={<div>Admin Dashboard Home</div>} />
+            <Route path="products" element={<ProductListPage />} />
+            <Route path="products/new" element={<ProductForm />} />
+            <Route path="products/edit/:id" element={<ProductForm />} />
+            <Route path="users" element={<div>User Management</div>} />
+            <Route path="settings" element={<div>Admin Settings</div>} />
+          </Route>
           {/* Placeholder routes for other pages */}
           <Route path="/news" element={<div className="container mx-auto px-4 py-8"><h1>News Page</h1><p>Coming soon...</p></div>} />
           <Route path="/info" element={<div className="container mx-auto px-4 py-8"><h1>Useful Information</h1><p>Coming soon...</p></div>} />
