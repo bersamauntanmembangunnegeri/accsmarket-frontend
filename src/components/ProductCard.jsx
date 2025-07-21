@@ -1,4 +1,5 @@
 import { Star, Clock, TrendingUp, Users } from 'lucide-react'
+import { Link } from 'react-router-dom'
 import { Button } from '@/components/ui/button'
 import { Badge } from '@/components/ui/badge'
 
@@ -12,7 +13,8 @@ const ProductCard = ({
   successRate, 
   minOrder, 
   image,
-  isNew = false 
+  isNew = false,
+  accountId
 }) => {
   const getPlatformIcon = (platform) => {
     const icons = {
@@ -100,9 +102,11 @@ const ProductCard = ({
       <div className="flex items-center space-x-2">
         <div className="flex-1">
           <div className="text-xs text-center text-gray-600 mb-1">Buy</div>
-          <Button className="w-full bg-green-600 hover:bg-green-700 text-white text-sm py-2">
-            Buy
-          </Button>
+          <Link to={`/product/${accountId}`}>
+            <Button className="w-full bg-green-600 hover:bg-green-700 text-white text-sm py-2">
+              Buy
+            </Button>
+          </Link>
         </div>
         <div className="text-right">
           <select className="border border-gray-300 rounded px-2 py-1 text-xs">

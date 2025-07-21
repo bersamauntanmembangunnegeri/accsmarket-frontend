@@ -63,17 +63,18 @@ const CategorySection = ({ category, subcategory, products, onViewAll }) => {
       {/* Products Grid */}
       <div className="bg-gray-50 p-4 rounded-b-lg">
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-5 gap-4 mb-4">
-          {products.slice(0, 5).map((product, index) => (
+          {products.slice(0, 5).map((product) => (
             <ProductCard
-              key={index}
+              key={product.id}
               platform={product.platform}
               title={product.title}
               description={product.description}
               price={product.price}
-              stock={product.stock}
+              stock={product.stock_quantity}
               rating={product.rating}
-              successRate={product.successRate}
-              minOrder={product.minOrder}
+              successRate={product.success_rate}
+              minOrder={product.min_order_quantity}
+              accountId={product.id}
               isNew={product.isNew}
             />
           ))}
